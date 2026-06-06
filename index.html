@@ -12,6 +12,8 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .serif-title { font-family: 'Playfair Display', serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -27,10 +29,10 @@
     </header>
 
     <section class="bg-gradient-to-r from-emerald-950 to-teal-900 text-white py-16 px-4 text-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Amazon_rainforest.jpg')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Amazon_rainforest.jpg')] bg-cover bg-center"></div>
         <div class="relative max-w-3xl mx-auto">
             <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 serif-title tracking-wide">The Interactive Animal Encyclopedia</h1>
-            <p class="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">Delve into high-fidelity, deeply researched insights into the animal kingdom’s most fascinating creatures.</p>
+            <p class="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">Delve into high-fidelity, deeply researched insights into 40 of the animal kingdom’s most fascinating creatures.</p>
             
             <div class="bg-white p-2 rounded-xl shadow-lg flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
                 <div class="flex items-center flex-1 px-3 bg-slate-100 rounded-lg">
@@ -42,9 +44,10 @@
                         <option value="all">All Classes</option>
                         <option value="Mammal">Mammals</option>
                         <option value="Bird">Birds</option>
-                        <option value="Amphibian">Amphibians</option>
                         <option value="Reptile">Reptiles</option>
+                        <option value="Amphibian">Amphibians</option>
                         <option value="Fish">Fish</option>
+                        <option value="Invertebrate">Invertebrates</option>
                     </select>
                 </div>
             </div>
@@ -53,12 +56,12 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-1">Featured Species</h2>
-            <p id="resultCount" class="text-sm text-slate-500 font-medium">Showing all species</p>
+            <h2 class="text-2xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-1">Species Database</h2>
+            <p id="resultCount" class="text-sm text-slate-500 font-medium">Loading database...</p>
         </div>
 
         <div id="animalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        </div>
+            </div>
         
         <div id="emptyState" class="hidden text-center py-16">
             <i class="fa-solid fa-paw text-slate-300 text-5xl mb-4"></i>
@@ -132,182 +135,355 @@
 
     <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
         <div class="max-w-7xl mx-auto px-4">
-            <p>&copy; 2026 FaunaVerse Encyclopedia. Peer-reviewed ecological references.</p>
-            <p class="text-xs text-slate-600 mt-2">Built using high-resolution biological datasets and interactive open-source frameworks.</p>
+            <p>&copy; 2026 FaunaVerse Encyclopedia. Powered by Wikipedia API integration.</p>
         </div>
     </footer>
 
     <script>
+        // A placeholder image to show while the API fetches the real pictures
+        const placeholderImg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23cbd5e1'/%3E%3Ccircle cx='400' cy='300' r='60' fill='%2394a3b8'/%3E%3Cpath d='M250 600 L400 450 L500 550 L800 250 L800 600 Z' fill='%2394a3b8' opacity='0.4'/%3E%3Ctext x='50%25' y='65%25' font-family='sans-serif' font-size='24' fill='%2364748b' text-anchor='middle'%3ELoading Image...%3C/text%3E%3C/svg%3E`;
+
         const animalDataset = [
+            // --- MAMMALS ---
             {
-                id: "elephant",
-                name: "African Bush Elephant",
-                scientificName: "Loxodonta africana",
-                class: "Mammal",
-                diet: "Herbivore",
-                habitat: "Savannahs & Forests",
-                lifespan: "60 - 70 Years",
-                status: "Endangered",
-                statusColor: "bg-red-100 text-red-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/b/b8/Elephas_maximus_%28Bandipur%29.jpg",
-                shortDesc: "The largest living terrestrial mammal on Earth, recognized by its long trunk and immense intelligence.",
-                overview: "The African Bush Elephant is a keystone species critical to maintaining its native ecosystems. Utilizing their powerful trunks containing over 40,000 muscles, they forge paths through dense brush, excavate dry riverbeds to create water holes for other species, and disperse seeds across vast geographical boundaries.",
-                ecologicalRole: "Engineers of the savannah. They suppress bush encroachment, creating open grasslands essential for grazing herbivores.",
-                threats: "Severe habitat fragmentation driven by agricultural expansion and illegal poaching syndicates targetting ivory tusks.",
-                fact: "An adult elephant requires up to 300 pounds (136 kg) of vegetation daily and can detect water sources from miles away via seismic vibrations."
+                id: "elephant", name: "African Bush Elephant", wikiTitle: "African_bush_elephant", class: "Mammal", diet: "Herbivore", habitat: "Savannahs & Forests", lifespan: "60-70 Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "The largest living terrestrial animal, recognized by its immense intelligence.",
+                overview: "Utilizing their powerful trunks containing over 40,000 muscles, they forge paths through dense brush and disperse seeds across vast geographical boundaries. They possess sophisticated neurological structures demonstrating deep empathy.",
+                ecologicalRole: "Engineers of the savannah. They suppress bush encroachment, creating open grasslands.",
+                threats: "Severe habitat fragmentation and illegal poaching for ivory.",
+                fact: "An adult elephant requires up to 300 pounds of vegetation daily."
             },
             {
-                id: "falcon",
-                name: "Peregrine Falcon",
-                scientificName: "Falco peregrinus",
-                class: "Bird",
-                diet: "Carnivore",
-                habitat: "Global / Crags & Cities",
-                lifespan: "12 - 15 Years",
-                status: "Least Concern",
-                statusColor: "bg-green-100 text-green-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/8/86/Falco_peregrinus_brachyurus_waiting.jpg",
-                shortDesc: "The undisputed speed monarch of the animal kingdom, capable of breathtaking aerial hunting dives.",
-                overview: "Found on every continent except Antarctica, the Peregrine Falcon represents the pinnacle of evolutionary aerodynamics. Renowned for its hunting dive (the 'stoop'), it ascends to great heights before plunging nearly vertically onto prey. Its respiratory system is uniquely modified to prevent its lungs from bursting.",
-                ecologicalRole: "Apex avian predator. Regulates populations of medium-sized birds like pigeons and shorebirds, preserving local ecosystem balances.",
-                threats: "Historically decimated by organochlorine pesticides (DDT). Current hazards include wind turbine collisions and urban chemical exposure.",
-                fact: "During its signature hunting stoop, the Peregrine Falcon reaches speeds exceeding 240 mph (386 km/h)."
+                id: "bluewhale", name: "Blue Whale", wikiTitle: "Blue_whale", class: "Mammal", diet: "Carnivore (Plankton)", habitat: "Open Oceans", lifespan: "80-90 Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "The largest known animal ever to have lived on Earth.",
+                overview: "Growing up to 100 feet long, its tongue alone can weigh as much as an adult elephant. Despite its mass, it survives exclusively on tiny shrimp-like crustaceans called krill.",
+                ecologicalRole: "Crucial element of the oceanic nutrient cycle.",
+                threats: "Ocean noise pollution disrupting communications, and ship-strikes.",
+                fact: "A blue whale's pulse is so powerful it can be detected from miles away."
             },
             {
-                id: "axolotl",
-                name: "Axolotl",
-                scientificName: "Ambystoma mexicanum",
-                class: "Amphibian",
-                diet: "Carnivore",
-                habitat: "Lake Xochimilco",
-                lifespan: "10 - 15 Years",
-                status: "Critically Endangered",
-                statusColor: "bg-rose-200 text-rose-900 border border-rose-300",
-                image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Axolotl_Salamander.jpg",
-                shortDesc: "An evolutionary marvel exhibiting neoteny, meaning it retains its juvenile traits throughout its entire life.",
-                overview: "The Axolotl is a unique amphibian that never undergoes full metamorphosis; unlike frogs or salamanders, it retains its external feathered gills and remains strictly aquatic into adulthood. Beyond its appearance, it possesses an unparalleled physiological superpower: the ability to seamlessly regenerate lost limbs and organs.",
-                ecologicalRole: "Top native predator in its micro-aquatic ecosystem, feeding on insects, mollusks, and small fish.",
-                threats: "Extreme water pollution in Mexico City, invasive predatory fish, and near-complete drying of its native canals.",
-                fact: "Scientists heavily study axolotls in laboratories worldwide due to their ability to regenerate complete organs."
+                id: "tiger", name: "Bengal Tiger", wikiTitle: "Bengal_tiger", class: "Mammal", diet: "Carnivore", habitat: "Asian Forests", lifespan: "8-10 Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "An iconic apex predator characterized by its striking orange coat.",
+                overview: "As solitary and highly territorial hunters, they rely on stealth to take down ungulates. Their distinctive striped coats act as perfect camouflage in tall grasses.",
+                ecologicalRole: "Vital in regulating prey populations, preventing overgrazing.",
+                threats: "Habitat loss and highly organized illegal poaching.",
+                fact: "No two tigers have the exact same stripe pattern; they are unique like fingerprints."
             },
             {
-                id: "bluewhale",
-                name: "Blue Whale",
-                scientificName: "Balaenoptera musculus",
-                class: "Mammal",
-                diet: "Carnivore (Plankton)",
-                habitat: "Open Oceans",
-                lifespan: "80 - 90 Years",
-                status: "Endangered",
-                statusColor: "bg-red-100 text-red-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Anim1716_-_Flickr_-_NOAA_Photo_Library.jpg",
-                shortDesc: "The largest known animal ever to have lived on Earth—surpassing even the heaviest prehistoric dinosaurs.",
-                overview: "The Blue Whale is a marine mammal belonging to the baleen suborder. Growing up to 100 feet long, its tongue alone can weigh as much as an entire adult elephant. Despite its monumental mass, it survives almost exclusively on tiny shrimp-like crustaceans called krill.",
-                ecologicalRole: "Crucial element of the oceanic nutrient cycle. Their deep-water feeding and surface excretion distribute vital minerals.",
-                threats: "Global ocean noise pollution disrupting acoustic communications, ship-strike impacts, and changing ocean temperatures.",
-                fact: "A blue whale's pulse is so powerful that its heartbeat can be detected from up to two miles away."
+                id: "panda", name: "Giant Panda", wikiTitle: "Giant_panda", class: "Mammal", diet: "Herbivore", habitat: "Chinese Mountains", lifespan: "20 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "A beloved bear species with a distinctive black-and-white coat.",
+                overview: "Despite belonging to the order Carnivora, the Giant Panda’s diet consists 99% of bamboo. They have developed a 'pseudo-thumb' to dexterously grasp bamboo stalks.",
+                ecologicalRole: "Crucial seed dispersers and forest facilitators.",
+                threats: "Extreme habitat fragmentation restricting genetic diversity.",
+                fact: "Panda cubs are born incredibly tiny, weighing only about 100 grams."
             },
             {
-                id: "komodo",
-                name: "Komodo Dragon",
-                scientificName: "Varanus komodoensis",
-                class: "Reptile",
-                diet: "Carnivore",
-                habitat: "Indonesian Islands",
-                lifespan: "30+ Years",
-                status: "Endangered",
-                statusColor: "bg-red-100 text-red-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/d/df/Komodo_dragon_with_tongue.jpg",
-                shortDesc: "The heaviest, most aggressive living species of lizard, equipped with toxic venom delivery systems.",
-                overview: "Dominating the ecosystems of the Lesser Sunda Islands, the Komodo Dragon employs a combination of brute force and chemical warfare. Modern research confirms they possess complex venom glands in their lower jaws that discharge toxic proteins.",
+                id: "cheetah", name: "Cheetah", wikiTitle: "Cheetah", class: "Mammal", diet: "Carnivore", habitat: "African Savannahs", lifespan: "10-12 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "The fastest land animal, capable of incredible bursts of speed.",
+                overview: "The cheetah's body is specialized for speed, featuring a lightweight frame, long thin legs, and a highly flexible spine. They hunt entirely by vision rather than scent during the daytime.",
+                ecologicalRole: "Controls populations of swift herbivores like gazelles.",
+                threats: "High infant mortality from larger predators and loss of prey base.",
+                fact: "A cheetah can accelerate from 0 to 60 mph in just three seconds."
+            },
+            {
+                id: "gorilla", name: "Mountain Gorilla", wikiTitle: "Mountain_gorilla", class: "Mammal", diet: "Herbivore", habitat: "African Cloud Forests", lifespan: "35-40 Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "A highly intelligent, peaceful primate that lives in close-knit family troops.",
+                overview: "Living in high-altitude volcanic mountains, these massive primates share about 98% of their DNA with humans. They are led by a dominant older male known as a silverback.",
+                ecologicalRole: "Major seed dispersers, shaping the structure of the dense forest.",
+                threats: "Poaching, human disease transmission, and political instability in their regions.",
+                fact: "Gorillas can learn complex sign language to communicate with humans."
+            },
+            {
+                id: "kangaroo", name: "Red Kangaroo", wikiTitle: "Red_kangaroo", class: "Mammal", diet: "Herbivore", habitat: "Australian Outback", lifespan: "15-20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The largest marsupial in the world, renowned for its powerful leaping ability.",
+                overview: "Adapted to the harsh Australian desert, Red Kangaroos move by hopping, an incredibly energy-efficient method of travel. Mothers carry their developing young (joeys) in a pouch.",
+                ecologicalRole: "Primary large grazers of the Australian interior ecosystems.",
+                threats: "Drought and competition for resources with introduced livestock.",
+                fact: "A Red Kangaroo can leap over 25 feet (8 meters) in a single bound."
+            },
+            {
+                id: "polarbear", name: "Polar Bear", wikiTitle: "Polar_bear", class: "Mammal", diet: "Carnivore", habitat: "Arctic Sea Ice", lifespan: "20-25 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "A massive hypercarnivore uniquely adapted to life on the frozen Arctic Ocean.",
+                overview: "Polar bears rely entirely on sea ice to hunt their primary prey, ringed seals. They possess a thick layer of blubber and water-repellent guard hairs to survive freezing temperatures.",
+                ecologicalRole: "Apex predator of the Arctic ecosystem, regulating seal populations.",
+                threats: "Catastrophic loss of sea ice habitat due to global climate change.",
+                fact: "A polar bear's fur is actually hollow and transparent, and their skin is black to absorb the sun's heat."
+            },
+            {
+                id: "sloth", name: "Brown-throated Sloth", wikiTitle: "Brown-throated_sloth", class: "Mammal", diet: "Herbivore", habitat: "Rainforest Canopies", lifespan: "15-20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A notoriously slow-moving tree-dweller found in Central and South America.",
+                overview: "Sloths have an incredibly slow metabolism to conserve energy, processing their leafy diet over several days. They move so slowly that algae often grows in their fur, providing camouflage.",
+                ecologicalRole: "They host an entire micro-ecosystem of moths and algae in their fur.",
+                threats: "Deforestation and overhead powerline electrocutions.",
+                fact: "Sloths only descend to the forest floor once a week to use the bathroom."
+            },
+            {
+                id: "moose", name: "Moose", wikiTitle: "Moose", class: "Mammal", diet: "Herbivore", habitat: "Boreal Forests", lifespan: "15-20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The largest and heaviest extant species in the deer family.",
+                overview: "Recognizable by the massive palmate antlers of the males, moose are solitary animals capable of eating up to 70 pounds of aquatic and woody vegetation a day. They are surprisingly excellent swimmers.",
+                ecologicalRole: "Their heavy browsing shapes the structure of forest understories and wetlands.",
+                threats: "Climate change leading to severe winter tick infestations.",
+                fact: "A moose can dive completely underwater to reach nutrient-rich lily roots on the lake bottom."
+            },
+            {
+                id: "orangutan", name: "Bornean Orangutan", wikiTitle: "Bornean_orangutan", class: "Mammal", diet: "Omnivore", habitat: "Borneo Rainforests", lifespan: "35-45 Years", status: "Critically Endangered", statusColor: "bg-rose-200 text-rose-900 border border-rose-300", image: placeholderImg,
+                shortDesc: "A highly intelligent, red-haired great ape that spends almost its entire life in trees.",
+                overview: "Orangutans are the world's largest arboreal mammals. They use long, powerful arms to swing through the canopy, searching for seasonal fruits. They build elaborate woven sleeping nests every single night.",
+                ecologicalRole: "Known as 'gardeners of the forest' for their critical role in seed dispersal.",
+                threats: "Massive deforestation for palm oil plantations and illegal pet trade.",
+                fact: "Their arm span can reach over 7 feet (2 meters), longer than their entire body height."
+            },
+            {
+                id: "rhino", name: "White Rhinoceros", wikiTitle: "White_rhinoceros", class: "Mammal", diet: "Herbivore", habitat: "African Savannahs", lifespan: "40-50 Years", status: "Near Threatened", statusColor: "bg-amber-100 text-amber-800", image: placeholderImg,
+                shortDesc: "A massive, armor-plated grazer featuring two distinctive horns on its snout.",
+                overview: "Despite their name, White Rhinos are actually gray. They are highly social compared to other rhinos and use their wide, square lips to efficiently graze on short grasses across the African plains.",
+                ecologicalRole: "Mega-grazers that act as natural lawnmowers, preventing wildfires by keeping grass short.",
+                threats: "Relentless illegal poaching for their keratin horns, driven by black market traditional medicine.",
+                fact: "A rhinoceros horn is not made of bone, but tightly compressed keratin—the exact same material as human fingernails."
+            },
+            {
+                id: "zebra", name: "Plains Zebra", wikiTitle: "Plains_zebra", class: "Mammal", diet: "Herbivore", habitat: "African Grasslands", lifespan: "20-25 Years", status: "Near Threatened", statusColor: "bg-amber-100 text-amber-800", image: placeholderImg,
+                shortDesc: "A highly social equine famous for its dazzling black-and-white striped coat.",
+                overview: "Plains zebras are highly nomadic, traveling in massive herds to find fresh grazing and water. Their incredible stripes confuse predators like lions, making it hard to single out one individual in a running herd.",
+                ecologicalRole: "Pioneer grazers; they eat the tall, tough grasses, exposing tender shoots for other herbivores.",
+                threats: "Loss of migratory corridors due to human fencing and agriculture.",
+                fact: "Underneath their black and white hair, a zebra's skin is solid black."
+            },
+            {
+                id: "hippo", name: "Hippopotamus", wikiTitle: "Hippopotamus", class: "Mammal", diet: "Herbivore", habitat: "African Rivers & Lakes", lifespan: "40-50 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "A massive, semi-aquatic mammal considered one of the most dangerous animals in Africa.",
+                overview: "Hippos spend their days submerged in water to keep their massive hairless bodies cool, emerging at night to graze. Despite their stocky build, they are highly aggressive and territorial.",
+                ecologicalRole: "Their nutrient-rich dung fertilizes river systems, supporting vast aquatic food webs.",
+                threats: "Habitat loss, water diversion, and poaching for their ivory canine teeth.",
+                fact: "Hippos cannot actually swim or float; they sink to the bottom and run or walk along the riverbed."
+            },
+            {
+                id: "wolf", name: "Gray Wolf", wikiTitle: "Gray_wolf", class: "Mammal", diet: "Carnivore", habitat: "Forests & Tundra", lifespan: "6-8 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The largest wild member of the dog family, known for complex social pack structures.",
+                overview: "Wolves are highly adaptable apex predators living in packs consisting of an alpha pair and their offspring. They use sophisticated communication involving howling, body language, and scent marking.",
+                ecologicalRole: "Keystone species that controls herbivore populations, which in turn prevents overgrazing of forests.",
+                threats: "Habitat fragmentation and historical persecution by humans over livestock protection.",
+                fact: "A wolf pack can consume up to 20 pounds of meat per wolf in a single successful meal."
+            },
+
+            // --- BIRDS ---
+            {
+                id: "falcon", name: "Peregrine Falcon", wikiTitle: "Peregrine_falcon", class: "Bird", diet: "Carnivore", habitat: "Global / Cities", lifespan: "12-15 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The undisputed speed monarch of the animal kingdom.",
+                overview: "Renowned for its hunting dive (the 'stoop'), it ascends to great heights before plunging nearly vertically onto prey. Its respiratory system is modified to prevent its lungs from bursting.",
+                ecologicalRole: "Apex avian predator, preserving local ecosystem balances.",
+                threats: "Historically decimated by DDT pesticides; current hazards include wind turbines.",
+                fact: "During its stoop, it reaches speeds exceeding 240 mph (386 km/h)."
+            },
+            {
+                id: "penguin", name: "Emperor Penguin", wikiTitle: "Emperor_penguin", class: "Bird", diet: "Carnivore", habitat: "Antarctic Ice", lifespan: "15-20 Years", status: "Near Threatened", statusColor: "bg-amber-100 text-amber-800", image: placeholderImg,
+                shortDesc: "The tallest and heaviest of all living penguin species.",
+                overview: "Endemic to Antarctica, they breed during the brutal winter. Males endure months of fasting, balancing single eggs on their feet under a warm brood pouch.",
+                ecologicalRole: "Major consumer of krill and squid, transferring nutrients to terrestrial ice.",
+                threats: "Climate change severely shrinking the sea ice necessary for breeding.",
+                fact: "They can dive to depths of 500 meters and hold their breath for 20 minutes."
+            },
+            {
+                id: "eagle", name: "Bald Eagle", wikiTitle: "Bald_eagle", class: "Bird", diet: "Carnivore", habitat: "North American Coasts", lifespan: "20-30 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A massive bird of prey and the national symbol of the United States.",
+                overview: "Bald eagles are opportunistic feeders that survive mainly on fish, which they swoop down and snatch from the water with specialized talons. They build the largest nests of any North American bird.",
+                ecologicalRole: "Top avian predator that helps control fish and rodent populations.",
+                threats: "Lead poisoning from scavenging hunted animals, and habitat destruction.",
+                fact: "A bald eagle's nest can weigh over 2,000 pounds (900 kg) and be 10 feet across."
+            },
+            {
+                id: "ostrich", name: "Common Ostrich", wikiTitle: "Common_ostrich", class: "Bird", diet: "Omnivore", habitat: "African Savannahs", lifespan: "40-45 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The world's largest living bird, incapable of flight but built for incredible running speed.",
+                overview: "Ostriches compensate for their lack of flight with powerful, two-toed legs. They have exceptional eyesight to spot predators from afar across flat plains.",
+                ecologicalRole: "Seed dispersers and a food source for large predators like lions.",
+                threats: "Habitat loss and historical overhunting for their large feathers.",
+                fact: "An ostrich's eye is larger than its entire brain."
+            },
+            {
+                id: "macaw", name: "Scarlet Macaw", wikiTitle: "Scarlet_macaw", class: "Bird", diet: "Herbivore", habitat: "Amazon Rainforest", lifespan: "40-50 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A brilliantly colored, highly intelligent parrot native to the American tropics.",
+                overview: "Featuring bright red, yellow, and blue plumage, Scarlet Macaws mate for life. They possess incredibly powerful beaks capable of cracking the hardest rainforest nuts and seeds.",
+                ecologicalRole: "Important seed predators and dispersers in the rainforest canopy.",
+                threats: "Severe deforestation and capture for the illegal exotic pet trade.",
+                fact: "They gather in flocks to eat clay from riverbanks, which neutralizes toxins found in their food."
+            },
+            {
+                id: "snowyowl", name: "Snowy Owl", wikiTitle: "Snowy_owl", class: "Bird", diet: "Carnivore", habitat: "Arctic Tundra", lifespan: "10-15 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "A large, white owl perfectly camouflaged for hunting in the snowy Arctic.",
+                overview: "Unlike most owls, Snowy Owls are diurnal, hunting during the 24-hour daylight of the Arctic summer. They have thick feathering on their feet to insulate against the freezing ground.",
+                ecologicalRole: "Primary predator of lemmings, keeping their exploding populations in check.",
+                threats: "Climate change altering their delicate tundra breeding habitats.",
+                fact: "A single Snowy Owl can consume over 1,600 lemmings in a single year."
+            },
+            {
+                id: "kingfisher", name: "Common Kingfisher", wikiTitle: "Common_kingfisher", class: "Bird", diet: "Carnivore", habitat: "Rivers & Streams", lifespan: "7-10 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A tiny, vibrant blue and orange bird renowned for diving into water to catch fish.",
+                overview: "Kingfishers hunt by perching silently above water, utilizing special adaptations in their eyes that reduce water glare. When they spot a fish, they plunge headfirst like a dart.",
+                ecologicalRole: "Bio-indicators; their presence indicates clean, unpolluted water systems.",
+                threats: "Water pollution and the destruction of riverbanks used for nesting.",
+                fact: "They must eat about 60% of their body weight in fish every single day to survive."
+            },
+            {
+                id: "toucan", name: "Toco Toucan", wikiTitle: "Toco_toucan", class: "Bird", diet: "Omnivore", habitat: "South American Canopies", lifespan: "20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A highly recognizable bird famous for its massive, brightly colored beak.",
+                overview: "The Toco Toucan's iconic beak is surprisingly light, made of keratin structured like a sponge. They use it to reach deep into tree cavities and to peel tough tropical fruits.",
+                ecologicalRole: "Crucial seed dispersers for many rainforest tree species.",
+                threats: "Deforestation and capturing for the illegal wildlife pet trade.",
+                fact: "Their enormous beak acts as a radiator, directing blood flow to release heat and keep the bird cool."
+            },
+            {
+                id: "cassowary", name: "Southern Cassowary", wikiTitle: "Southern_cassowary", class: "Bird", diet: "Omnivore", habitat: "Australian Rainforests", lifespan: "40-50 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A massive, prehistoric-looking flightless bird considered the most dangerous bird on Earth.",
+                overview: "Cassowaries possess a bony helmet (casque) on their heads and brilliant blue neck skin. They are highly territorial and equipped with a 5-inch dagger-like claw on each foot, capable of disemboweling threats.",
+                ecologicalRole: "The only creatures capable of distributing the massive seeds of certain rainforest trees.",
+                threats: "Habitat loss, vehicle strikes, and dog attacks.",
+                fact: "They communicate using deep, booming low-frequency sounds that vibrate through the dense forest."
+            },
+            {
+                id: "flamingo", name: "American Flamingo", wikiTitle: "American_flamingo", class: "Bird", diet: "Omnivore", habitat: "Mudflats & Lagoons", lifespan: "40-50 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A highly social wading bird instantly recognizable by its bright pink plumage.",
+                overview: "Flamingos feed by turning their heads upside-down in the water, using specialized bristle-like structures in their beaks to filter tiny shrimp and algae from the mud.",
+                ecologicalRole: "They regulate algae and crustacean levels in hypersaline lakes.",
+                threats: "Habitat destruction and human disturbance of their massive breeding colonies.",
+                fact: "They are not born pink; their color comes entirely from the beta-carotene in the shrimp they eat."
+            },
+
+            // --- REPTILES ---
+            {
+                id: "komodo", name: "Komodo Dragon", wikiTitle: "Komodo_dragon", class: "Reptile", diet: "Carnivore", habitat: "Indonesian Islands", lifespan: "30+ Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "The heaviest, most aggressive living species of lizard.",
+                overview: "Employs a combination of brute force and chemical warfare. Modern research confirms they possess complex venom glands in their lower jaws that discharge toxic proteins.",
                 ecologicalRole: "Apex scavenger and apex land predator within its highly restricted island territories.",
-                threats: "Climate change causing rising sea levels that threaten to submerge coastal habitats, along with human encroachment.",
-                fact: "Komodo dragons possess highly elastic stomachs, allowing them to comfortably consume up to 80 percent of their body weight in a single meal."
+                threats: "Rising sea levels threatening to submerge coastal habitats.",
+                fact: "They can consume up to 80% of their body weight in a single meal."
             },
             {
-                id: "tiger",
-                name: "Bengal Tiger",
-                scientificName: "Panthera tigris tigris",
-                class: "Mammal",
-                diet: "Carnivore",
-                habitat: "Asian Forests",
-                lifespan: "8 - 10 Years",
-                status: "Endangered",
-                statusColor: "bg-red-100 text-red-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg",
-                shortDesc: "An iconic apex predator characterized by its striking orange coat and dark vertical stripes.",
-                overview: "The Bengal Tiger is the most numerous tiger subspecies. As solitary and highly territorial hunters, they rely on stealth and power to take down ungulates like deer and wild boar. Their distinctive striped coats act as perfect camouflage in tall grasses.",
-                ecologicalRole: "As an apex predator, they are vital in regulating prey populations, which in turn prevents overgrazing and maintains forest health.",
-                threats: "Severe habitat loss due to human population expansion, and highly organized illegal poaching for traditional medicines.",
-                fact: "No two tigers have the exact same stripe pattern; their stripes are as unique as human fingerprints, and the pattern is even on their skin."
+                id: "chameleon", name: "Panther Chameleon", wikiTitle: "Panther_chameleon", class: "Reptile", diet: "Carnivore (Insects)", habitat: "Madagascar Forests", lifespan: "5-7 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A highly specialized lizard renowned for its ability to change color and independent eye movement.",
+                overview: "Panther chameleons change color not for camouflage, but to communicate emotions, regulate temperature, and attract mates. They hunt using a ballistic tongue that fires faster than the human eye can see.",
+                ecologicalRole: "Insect population controllers in the Madagascan canopy.",
+                threats: "Massive deforestation on the island of Madagascar.",
+                fact: "A chameleon's tongue can be up to twice the length of its entire body."
             },
             {
-                id: "penguin",
-                name: "Emperor Penguin",
-                scientificName: "Aptenodytes forsteri",
-                class: "Bird",
-                diet: "Carnivore",
-                habitat: "Antarctic Ice",
-                lifespan: "15 - 20 Years",
-                status: "Near Threatened",
-                statusColor: "bg-amber-100 text-amber-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Emperor_Penguin_Manchot_empereur.jpg",
-                shortDesc: "The tallest and heaviest of all living penguin species, enduring the harshest winters on Earth.",
-                overview: "Endemic to Antarctica, the Emperor Penguin breeds during the brutal Antarctic winter. Males endure months of fasting, balancing single eggs on their feet under a warm brood pouch while females hunt at sea.",
-                ecologicalRole: "Major consumer of krill, squid, and small fish, transferring significant marine nutrients to terrestrial ice shelves.",
-                threats: "Climate change severely shrinking the sea ice necessary for their breeding grounds and feeding areas.",
-                fact: "Emperor penguins can dive to depths of over 500 meters (1,640 feet) and hold their breath for more than 20 minutes while hunting."
+                id: "iguana", name: "Green Iguana", wikiTitle: "Green_iguana", class: "Reptile", diet: "Herbivore", habitat: "Tropical Rainforests", lifespan: "15-20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A large, arboreal lizard known for the prominent spines running down its back.",
+                overview: "Despite their dragon-like appearance and sharp teeth, Green Iguanas are strict herbivores. They are excellent swimmers and will dive into water to escape predators.",
+                ecologicalRole: "Seed dispersers for various tropical plants and vines.",
+                threats: "Habitat destruction and over-collection for the pet trade.",
+                fact: "They possess a 'third eye' on top of their head called a parietal eye, which detects shadows of aerial predators."
             },
             {
-                id: "dartfrog",
-                name: "Blue Poison Dart Frog",
-                scientificName: "Dendrobates azureus",
-                class: "Amphibian",
-                diet: "Carnivore (Insects)",
-                habitat: "South American Rainforests",
-                lifespan: "10 - 15 Years",
-                status: "Vulnerable",
-                statusColor: "bg-orange-100 text-orange-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/3/31/Dendrobates_azureus_%28blue_poison_dart_frog%29.JPG",
-                shortDesc: "A brilliantly colored amphibian whose vibrant skin serves as a warning of its lethal toxicity.",
-                overview: "Found in the Sipaliwini savanna of southern Suriname, this small frog sports a vibrant sapphire blue coloration with black spots. They do not synthesize their own poison; instead, they accumulate deadly alkaloid toxins through their diet.",
-                ecologicalRole: "Micro-predator regulating populations of small insects and acting as a toxic deterrent in the food web.",
-                threats: "Deforestation, illegal capture for the international pet trade, and susceptibility to the global amphibian chytrid fungus.",
-                fact: "When kept in captivity and fed a standard diet of fruit flies, these frogs completely lose their toxicity over time."
+                id: "alligator", name: "American Alligator", wikiTitle: "American_alligator", class: "Reptile", diet: "Carnivore", habitat: "Freshwater Swamps", lifespan: "35-50 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A massive, armored crocodilian that rules the swamps of the southeastern United States.",
+                overview: "Alligators are ambush predators, lying motionless in the water with only their eyes and nostrils exposed. They have incredibly powerful jaws that snap shut with bone-crushing force.",
+                ecologicalRole: "They create 'gator holes' in the mud that retain water during droughts, saving other aquatic species.",
+                threats: "Historically hunted to near extinction for leather, though now successfully recovered.",
+                fact: "The gender of an alligator hatchling is determined by the temperature of the nest during incubation."
             },
             {
-                id: "shark",
-                name: "Great White Shark",
-                scientificName: "Carcharodon carcharias",
-                class: "Fish",
-                diet: "Carnivore",
-                habitat: "Global Coastal Waters",
-                lifespan: "70+ Years",
-                status: "Vulnerable",
-                statusColor: "bg-orange-100 text-orange-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg",
+                id: "seaturtle", name: "Green Sea Turtle", wikiTitle: "Green_sea_turtle", class: "Reptile", diet: "Herbivore", habitat: "Tropical Oceans", lifespan: "80+ Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "A large marine turtle known for migrating vast distances across the open ocean.",
+                overview: "Adult green sea turtles are the only strictly herbivorous sea turtles, grazing constantly on seagrasses. Females return to the exact beach where they were born decades prior to lay their own eggs.",
+                ecologicalRole: "They maintain healthy seagrass beds by keeping them cropped short.",
+                threats: "Plastic pollution, accidental bycatch in fishing nets, and loss of nesting beaches.",
+                fact: "They can hold their breath for up to five hours while resting underwater."
+            },
+            {
+                id: "python", name: "Reticulated Python", wikiTitle: "Reticulated_python", class: "Reptile", diet: "Carnivore", habitat: "Southeast Asian Forests", lifespan: "15-20 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "The longest snake species in the world, capable of swallowing whole deer.",
+                overview: "These massive constrictors possess complex geometric scale patterns for camouflage. They hunt by ambushing prey, wrapping their muscular bodies around the victim to stop blood flow before swallowing it whole.",
+                ecologicalRole: "Apex predators that heavily regulate populations of mammals and birds.",
+                threats: "Hunting for their beautiful skin to be used in the fashion industry.",
+                fact: "They possess flexible jaw ligaments that allow them to stretch their mouths around prey much larger than their head."
+            },
+
+            // --- AMPHIBIANS ---
+            {
+                id: "axolotl", name: "Axolotl", wikiTitle: "Axolotl", class: "Amphibian", diet: "Carnivore", habitat: "Lake Xochimilco", lifespan: "10-15 Years", status: "Critically Endangered", statusColor: "bg-rose-200 text-rose-900 border border-rose-300", image: placeholderImg,
+                shortDesc: "An evolutionary marvel exhibiting neoteny, retaining its juvenile traits its entire life.",
+                overview: "It never undergoes full metamorphosis, retaining its external feathered gills and remaining strictly aquatic into adulthood. It possesses the ability to seamlessly regenerate lost limbs and heart tissue.",
+                ecologicalRole: "Top native predator in its micro-aquatic ecosystem.",
+                threats: "Extreme water pollution in Mexico City and invasive predatory fish.",
+                fact: "Scientists heavily study axolotls due to their ability to regenerate complete organs."
+            },
+            {
+                id: "dartfrog", name: "Blue Poison Dart Frog", wikiTitle: "Dyeing_poison_dart_frog", class: "Amphibian", diet: "Carnivore (Insects)", habitat: "South American Rainforests", lifespan: "10-15 Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
+                shortDesc: "A brilliantly colored amphibian whose vibrant skin warns of its lethal toxicity.",
+                overview: "They do not synthesize their own poison; instead, they accumulate deadly alkaloid toxins through their diet of specific ants and termites on the forest floor.",
+                ecologicalRole: "Micro-predator acting as a toxic deterrent in the food web.",
+                threats: "Deforestation and the global amphibian chytrid fungus.",
+                fact: "When kept in captivity and fed standard fruit flies, they completely lose their toxicity."
+            },
+            {
+                id: "treefrog", name: "Red-eyed Tree Frog", wikiTitle: "Agalychnis_callidryas", class: "Amphibian", diet: "Carnivore (Insects)", habitat: "Neotropical Rainforests", lifespan: "5 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "An iconic rainforest frog known for its striking, neon-red eyes.",
+                overview: "During the day, they tuck their bright limbs inward and close their eyes to blend into green leaves. If disturbed, they flash their bright red eyes and orange toes to startle predators, giving them a second to escape.",
+                ecologicalRole: "Important insectivores that help control populations of mosquitoes and flies.",
+                threats: "Deforestation and changes in rainfall patterns due to climate change.",
+                fact: "They use sticky pads on their toes to cling effortlessly to wet leaves and glass."
+            },
+
+            // --- FISH ---
+            {
+                id: "shark", name: "Great White Shark", wikiTitle: "Great_white_shark", class: "Fish", diet: "Carnivore", habitat: "Global Coastal Waters", lifespan: "70+ Years", status: "Vulnerable", statusColor: "bg-orange-100 text-orange-800", image: placeholderImg,
                 shortDesc: "The world's largest known predatory fish, equipped with highly advanced sensory organs.",
-                overview: "The Great White Shark is a highly migratory apex predator found in cool, coastal waters globally. They boast a specialized sixth sense that allows them to detect the microscopic electromagnetic fields generated by the heartbeat of their prey.",
-                ecologicalRole: "Critical to oceanic health, culling weak and diseased animals from marine mammal populations like seals and sea lions.",
-                threats: "Accidental bycatch in commercial fishing nets, targeted finning, and lingering historical stigma leading to culling.",
-                fact: "A Great White Shark goes through around 30,000 teeth in its lifetime, constantly rolling new rows of teeth forward to replace broken ones."
+                overview: "The Great White Shark is a highly migratory apex predator. They boast a specialized sixth sense that allows them to detect the microscopic electromagnetic fields generated by the heartbeat of their prey.",
+                ecologicalRole: "Critical to oceanic health, culling weak animals from marine mammal populations.",
+                threats: "Accidental bycatch in commercial fishing nets and targeted finning.",
+                fact: "A Great White Shark goes through around 30,000 teeth in its lifetime."
             },
             {
-                id: "panda",
-                name: "Giant Panda",
-                scientificName: "Ailuropoda melanoleuca",
-                class: "Mammal",
-                diet: "Herbivore (Bamboo)",
-                habitat: "Mountain Forests of China",
-                lifespan: "20 Years",
-                status: "Vulnerable",
-                statusColor: "bg-orange-100 text-orange-800",
-                image: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Grosser_Panda.JPG",
-                shortDesc: "A beloved bear species renowned for its distinctive black-and-white coat and heavy bamboo diet.",
-                overview: "Despite belonging to the order Carnivora, the Giant Panda’s diet consists 99% of bamboo. Because bamboo offers so little nutritional value, they must eat 26 to 84 pounds (12 to 38 kg) of it every single day to survive.",
-                ecologicalRole: "Crucial seed dispersers and forest facilitators; their roaming spreads seeds and thins out bamboo patches to allow new growth.",
-                threats: "Extreme habitat fragmentation restricting genetic diversity, though intensive conservation efforts have recently improved their numbers.",
-                fact: "Panda cubs are born incredibly tiny, weighing only about 100 grams (3.5 ounces)—about 1/900th the size of their mother."
+                id: "mantaray", name: "Giant Manta Ray", wikiTitle: "Giant_oceanic_manta_ray", class: "Fish", diet: "Carnivore (Plankton)", habitat: "Open Oceans", lifespan: "40-50 Years", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "A majestic, enormous fish that glides through the ocean like a bird in flight.",
+                overview: "Despite their massive size (up to 29 feet across), mantas are gentle filter-feeders that eat microscopic plankton. They possess the largest brain-to-body weight ratio of all fish.",
+                ecologicalRole: "They act as nutrient transporters, diving deep to feed and returning to the surface.",
+                threats: "Targeted fishing for their gill plates, used in traditional medicine.",
+                fact: "Manta rays are known to recognize themselves in mirrors, indicating high self-awareness."
+            },
+
+            // --- MARINE MAMMALS (Categorized here for ease, officially Mammals) ---
+            {
+                id: "orca", name: "Orca (Killer Whale)", wikiTitle: "Orca", class: "Mammal", diet: "Carnivore", habitat: "Global Oceans", lifespan: "50-80 Years", status: "Data Deficient", statusColor: "bg-slate-100 text-slate-800", image: placeholderImg,
+                shortDesc: "A highly intelligent, apex marine predator with deep, complex family cultures.",
+                overview: "Orcas are actually the largest members of the dolphin family. They hunt in coordinated pods, utilizing strategies passed down through generations, effectively making them one of the only animals with distinct regional 'cultures'.",
+                ecologicalRole: "Absolute apex predator of the ocean, regulating everything from fish to other whale species.",
+                threats: "Chemical pollution concentrating in their blubber, and declining salmon populations.",
+                fact: "Different orca pods speak entirely different dialects, and cannot understand pods from other regions."
+            },
+            {
+                id: "dolphin", name: "Bottlenose Dolphin", wikiTitle: "Common_bottlenose_dolphin", class: "Mammal", diet: "Carnivore", habitat: "Warm Global Oceans", lifespan: "40-50 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "A highly social marine mammal famous for its intelligence and playful behavior.",
+                overview: "Dolphins use echolocation to 'see' their surroundings using sound waves. They are highly social, forming complex alliances and using unique signature whistles to identify one another by name.",
+                ecologicalRole: "Regulates populations of schooling fish and squid.",
+                threats: "Entanglement in fishing gear and ocean noise pollution from ships.",
+                fact: "Dolphins sleep by shutting down only one half of their brain at a time, so they remember to breathe."
+            },
+
+            // --- INVERTEBRATES ---
+            {
+                id: "octopus", name: "Common Octopus", wikiTitle: "Common_octopus", class: "Invertebrate", diet: "Carnivore", habitat: "Coral Reefs & Seabeds", lifespan: "1-2 Years", status: "Least Concern", statusColor: "bg-green-100 text-green-800", image: placeholderImg,
+                shortDesc: "An alien-like, highly intelligent invertebrate with eight arms and no bones.",
+                overview: "Octopuses have neurons distributed throughout their arms, meaning each arm can 'think' for itself. They have specialized skin cells that allow them to change color and texture instantly to match coral or rocks.",
+                ecologicalRole: "Highly effective predator of crabs, keeping crustacean populations balanced.",
+                threats: "Overfishing and sensitivity to ocean acidification.",
+                fact: "An octopus has three hearts and blue, copper-based blood."
+            },
+            {
+                id: "jellyfish", name: "Lion's Mane Jellyfish", wikiTitle: "Lion's_mane_jellyfish", class: "Invertebrate", diet: "Carnivore", habitat: "Cold Northern Oceans", lifespan: "1 Year", status: "Not Evaluated", statusColor: "bg-slate-100 text-slate-800", image: placeholderImg,
+                shortDesc: "The largest known species of jellyfish, featuring thousands of toxic tentacles.",
+                overview: "Drifting on ocean currents, this massive jellyfish uses its trailing, stinging tentacles to ensnare small fish and other jellyfish. It has no brain, heart, or blood.",
+                ecologicalRole: "A major predator of zooplankton and a floating shelter for immune fish species.",
+                threats: "They are largely unaffected by human activity; warming oceans are actually increasing their numbers.",
+                fact: "Their tentacles can reach up to 120 feet (36 meters) long, longer than a blue whale."
+            },
+            {
+                id: "butterfly", name: "Monarch Butterfly", wikiTitle: "Monarch_butterfly", class: "Invertebrate", diet: "Herbivore (Nectar)", habitat: "North American Fields", lifespan: "2-6 Months", status: "Endangered", statusColor: "bg-red-100 text-red-800", image: placeholderImg,
+                shortDesc: "A beautiful orange-and-black insect famous for its incredible multi-generational migration.",
+                overview: "Every year, Monarchs travel thousands of miles from North America to wintering grounds in Mexico. It takes up to four generations of butterflies to complete a single annual migration cycle.",
+                ecologicalRole: "Important pollinators for wildflowers across the continent.",
+                threats: "Eradication of the milkweed plant (their only caterpillar food source) by herbicides.",
+                fact: "They use the magnetic pull of the Earth to navigate their massive journey."
             }
         ];
 
@@ -317,6 +493,7 @@
         const filterClass = document.getElementById('filterClass');
         const resultCount = document.getElementById('resultCount');
 
+        // Render the UI
         function renderCards(data) {
             animalGrid.innerHTML = '';
             
@@ -333,7 +510,7 @@
 
             data.forEach(animal => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col group cursor-pointer";
+                card.className = "bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col group cursor-pointer fade-in";
                 card.onclick = () => openModal(animal.id);
                 
                 card.innerHTML = `
@@ -344,11 +521,10 @@
                     <div class="p-5 flex-grow flex flex-col justify-between">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors serif-title">${animal.name}</h3>
-                            <p class="text-xs italic text-slate-400 mb-2">${animal.scientificName}</p>
-                            <p class="text-sm text-slate-600 line-clamp-3">${animal.shortDesc}</p>
+                            <p class="text-sm text-slate-600 mt-2 line-clamp-3">${animal.shortDesc}</p>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
-                            <span class="text-xs font-medium text-slate-500"><i class="fa-solid fa-map-pin mr-1 text-emerald-600"></i> ${animal.habitat.split('/')[0]}</span>
+                            <span class="text-xs font-medium text-slate-500 truncate w-1/2"><i class="fa-solid fa-map-pin mr-1 text-emerald-600"></i> ${animal.habitat.split('/')[0]}</span>
                             <span class="text-xs font-bold px-2 py-0.5 rounded ${animal.statusColor}">${animal.status}</span>
                         </div>
                     </div>
@@ -357,6 +533,45 @@
             });
         }
 
+        // --- THE MAGIC IMAGE API SCRIPT ---
+        // This function asks Wikipedia directly for the official pictures so your phone can't block them.
+        async function fetchRealImages() {
+            const batchSize = 25; // Fetch in chunks so we don't overwhelm the system
+            const imageMap = {};
+
+            for (let i = 0; i < animalDataset.length; i += batchSize) {
+                const batch = animalDataset.slice(i, i + batchSize);
+                const titles = batch.map(a => encodeURIComponent(a.wikiTitle)).join('|');
+                const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${titles}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    const pages = data.query.pages;
+                    
+                    Object.values(pages).forEach(page => {
+                        if (page.thumbnail) {
+                            imageMap[page.title.toLowerCase()] = page.thumbnail.source;
+                        }
+                    });
+                } catch (error) {
+                    console.error("API Fetch Error:", error);
+                }
+            }
+
+            // Apply the real pictures to the dataset
+            animalDataset.forEach(animal => {
+                const searchKey = animal.wikiTitle.replace(/_/g, ' ').toLowerCase();
+                if (imageMap[searchKey]) {
+                    animal.image = imageMap[searchKey];
+                }
+            });
+
+            // Re-draw the screen with the real pictures!
+            filterData();
+        }
+
+        // Search & Filter
         function filterData() {
             const query = searchInput.value.toLowerCase();
             const classFilter = filterClass.value;
@@ -364,17 +579,16 @@
             const filtered = animalDataset.filter(animal => {
                 const matchesSearch = animal.name.toLowerCase().includes(query) || 
                                       animal.diet.toLowerCase().includes(query) || 
-                                      animal.habitat.toLowerCase().includes(query) ||
-                                      animal.scientificName.toLowerCase().includes(query);
+                                      animal.habitat.toLowerCase().includes(query);
                 
                 const matchesClass = classFilter === 'all' || animal.class === classFilter;
-
                 return matchesSearch && matchesClass;
             });
 
             renderCards(filtered);
         }
 
+        // Modal Controls
         function openModal(id) {
             const animal = animalDataset.find(a => a.id === id);
             if (!animal) return;
@@ -384,7 +598,7 @@
             document.getElementById('modalTag').className = `px-2.5 py-1 text-xs font-semibold rounded-full uppercase tracking-wider mb-2 inline-block ${animal.statusColor}`;
             document.getElementById('modalTag').textContent = animal.class;
             document.getElementById('modalName').textContent = animal.name;
-            document.getElementById('modalSciName').textContent = animal.scientificName;
+            document.getElementById('modalSciName').textContent = animal.wikiTitle.replace(/_/g, ' ');
             
             document.getElementById('modalDiet').textContent = animal.diet;
             document.getElementById('modalHabitat').textContent = animal.habitat;
@@ -412,15 +626,17 @@
             document.body.style.overflow = '';
         }
 
+        // Listeners
         searchInput.addEventListener('input', filterData);
         filterClass.addEventListener('change', filterData);
-        
         document.getElementById('animalModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
+        // Start the app
         window.onload = () => {
-            renderCards(animalDataset);
+            renderCards(animalDataset); // Draw the site immediately with loading placeholders
+            fetchRealImages();          // Silently load the real images in the background!
         };
     </script>
 </body>
