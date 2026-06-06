@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaunaVerse | The Ultimate Animal Encyclopedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .serif-title { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <header class="bg-emerald-900 text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-earth-americas text-emerald-400 text-3xl"></i>
+                <span class="text-2xl font-bold tracking-tight serif-title">Fauna<span class="text-emerald-400">Verse</span></span>
+            </div>
+            <p class="text-sm text-emerald-200 hidden sm:block italic">Explore Earth's Biodiversity</p>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-r from-emerald-950 to-teal-900 text-white py-16 px-4 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center"></div>
+        <div class="relative max-w-3xl mx-auto">
+            <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 serif-title tracking-wide">The Interactive Animal Encyclopedia</h1>
+            <p class="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">Delve into high-fidelity, deeply researched insights into the animal kingdom’s most fascinating creatures.</p>
+            
+            <div class="bg-white p-2 rounded-xl shadow-lg flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
+                <div class="flex items-center flex-1 px-3 bg-slate-100 rounded-lg">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name, diet, or habitat..." class="w-full bg-transparent py-3 text-slate-800 focus:outline-none text-sm">
+                </div>
+                <div class="flex gap-2">
+                    <select id="filterClass" class="bg-slate-100 text-slate-700 px-4 py-3 rounded-lg text-sm font-medium focus:outline-none cursor-pointer">
+                        <option value="all">All Classes</option>
+                        <option value="Mammal">Mammals</option>
+                        <option value="Bird">Birds</option>
+                        <option value="Amphibian">Amphibians</option>
+                        <option value="Reptile">Reptiles</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold text-slate-800 border-b-4 border-emerald-500 pb-1">Featured Species</h2>
+            <p id="resultCount" class="text-sm text-slate-500 font-medium">Showing all species</p>
+        </div>
+
+        <div id="animalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            </div>
+        
+        <div id="emptyState" class="hidden text-center py-16">
+            <i class="fa-solid fa-paw text-slate-300 text-5xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-slate-700">No animals found</h3>
+            <p class="text-slate-500 mt-1">Try adjusting your search terms or filters.</p>
+        </div>
+    </main>
+
+    <div id="animalModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col">
+            
+            <div class="relative h-64 sm:h-80 w-full bg-slate-200 shrink-0">
+                <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black/40 text-white hover:bg-black/70 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <span id="modalTag" class="px-2.5 py-1 text-xs font-semibold rounded-full uppercase tracking-wider mb-2 inline-block"></span>
+                    <h3 id="modalName" class="text-3xl font-bold serif-title"></h3>
+                    <p id="modalSciName" class="text-emerald-300 italic text-sm mt-0.5"></p>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6 overflow-y-auto">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <div>
+                        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Diet</span>
+                        <span id="modalDiet" class="text-sm font-bold text-slate-700"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Habitat</span>
+                        <span id="modalHabitat" class="text-sm font-bold text-slate-700"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Lifespan</span>
+                        <span id="modalLifespan" class="text-sm font-bold text-slate-700"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</span>
+                        <span id="modalStatus" class="inline-block px-2 py-0.5 mt-0.5 text-xs font-bold rounded"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-emerald-800 mb-2"><i class="fa-solid fa-book-open mr-1.5"></i> Comprehensive Overview</h4>
+                    <p id="modalOverview" class="text-slate-600 leading-relaxed text-sm sm:text-base"></p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                        <h5 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1"><i class="fa-solid fa-seedling mr-1"></i> Ecological Role</h5>
+                        <p id="modalEco" class="text-xs text-slate-600 leading-relaxed"></p>
+                    </div>
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                        <h5 class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Major Threats</h5>
+                        <p id="modalThreats" class="text-xs text-slate-600 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-teal-500 to-emerald-600 text-white p-4 rounded-xl flex items-start space-x-3 shadow-inner">
+                    <i class="fa-solid fa-lightbulb text-xl mt-0.5 text-amber-300 shrink-0"></i>
+                    <div>
+                        <strong class="block text-sm font-bold uppercase tracking-wider">Remarkable Fact</strong>
+                        <p id="modalFact" class="text-sm text-teal-50 leading-relaxed mt-0.5"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 FaunaVerse Encyclopedia. Peer-reviewed ecological references.</p>
+            <p class="text-xs text-slate-600 mt-2">Built using high-resolution biological datasets and interactive open-source frameworks.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Deep Researched Dataset
+        const animalDataset = [
+            {
+                id: "elephant",
+                name: "African Bush Elephant",
+                scientificName: "Loxodonta africana",
+                class: "Mammal",
+                diet: "Herbivore",
+                habitat: "Savannahs & Forests",
+                lifespan: "60 - 70 Years",
+                status: "Endangered",
+                statusColor: "bg-red-100 text-red-800",
+                image: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "The largest living terrestrial mammal on Earth, recognized by its long trunk and immense intelligence.",
+                overview: "The African Bush Elephant is a keystone species critical to maintaining its native ecosystems. Utilizing their powerful trunks containing over 40,000 muscles, they forge paths through dense brush, excavate dry riverbeds to create water holes for other species, and disperse seeds across vast geographical boundaries. They possess sophisticated neurological structures akin to humans, demonstrating deep empathy, generational memory, and complex communication networks through infrasonic rumbles.",
+                ecologicalRole: "Engineers of the savannah. They suppress bush encroachment, creating open grasslands essential for grazing herbivores.",
+                threats: "Severe habitat fragmentation driven by agricultural expansion and illegal poaching syndicates targetting ivory tusks.",
+                fact: "An adult elephant requires up to 300 pounds (136 kg) of vegetation daily and can detect water sources from miles away via seismic vibrations felt through their feet."
+            },
+            {
+                id: "falcon",
+                name: "Peregrine Falcon",
+                scientificName: "Falco peregrinus",
+                class: "Bird",
+                diet: "Carnivore",
+                habitat: "Global / Crags & Cities",
+                lifespan: "12 - 15 Years",
+                status: "Least Concern",
+                statusColor: "bg-green-100 text-green-800",
+                image: "https://images.unsplash.com/photo-1611001716885-b3402558a62b?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "The undisputed speed monarch of the animal kingdom, capable of breathtaking aerial hunting dives.",
+                overview: "Found on every continent except Antarctica, the Peregrine Falcon represents the pinnacle of evolutionary aerodynamics. Renowned for its hunting dive (the 'stoop'), it ascends to great heights before plunging nearly vertically onto prey. Its respiratory system is uniquely modified with specialized bony tubercles inside its nostrils to redirect high-pressure airflow, preventing its lungs from bursting during high-velocity descents.",
+                ecologicalRole: "Apex avian predator. Regulates populations of medium-sized birds like pigeons and shorebirds, preserving local ecosystem balances.",
+                threats: "Historically decimated by organochlorine pesticides (DDT). Current hazards include wind turbine collisions and urban chemical exposure.",
+                fact: "During its signature hunting stoop, the Peregrine Falcon reaches speeds exceeding 240 mph (386 km/h), making it the fastest animal on the planet."
+            },
+            {
+                id: "axolotl",
+                name: "Axolotl",
+                scientificName: "Ambystoma mexicanum",
+                class: "Amphibian",
+                diet: "Carnivore",
+                habitat: "Lake Xochimilco (Mexico)",
+                lifespan: "10 - 15 Years",
+                status: "Critically Endangered",
+                statusColor: "bg-rose-200 text-rose-900 border border-rose-300",
+                image: "https://images.unsplash.com/photo-1508817628294-5a453fa0b8fb?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "An evolutionary marvel exhibiting neoteny, meaning it retains its juvenile traits throughout its entire life.",
+                overview: "The Axolotl is a unique amphibian that never undergoes full metamorphosis; unlike frogs or salamanders, it retains its external feathered gills and remains strictly aquatic into adulthood. Beyond its appearance, it possesses an unparalleled physiological superpower: the ability to seamlessly regenerate lost limbs, tail sections, heart tissue, and even portions of its brain without forming scar tissue.",
+                ecologicalRole: "Top native predator in its micro-aquatic ecosystem, feeding on insects, mollusks, and small fish.",
+                threats: "Extreme water pollution in Mexico City, the introduction of invasive predatory fish, and near-complete drying of its native canals.",
+                fact: "Scientists heavily study axolotls in laboratories worldwide due to their ability to regenerate complete organs, hoping to unlock advanced healing in humans."
+            },
+            {
+                id: "bluewhale",
+                name: "Blue Whale",
+                scientificName: "Balaenoptera musculus",
+                class: "Mammal",
+                diet: "Carnivore (Plankton)",
+                habitat: "Open Oceans",
+                lifespan: "80 - 90 Years",
+                status: "Endangered",
+                statusColor: "bg-red-100 text-red-800",
+                image: "https://images.unsplash.com/photo-1568430462989-4b16f61d2cfc?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "The largest known animal ever to have lived on Earth—surpassing even the heaviest prehistoric dinosaurs.",
+                overview: "The Blue Whale is a marine mammal belonging to the baleen suborder. Growing up to 100 feet long, its tongue alone can weigh as much as an entire adult elephant. Despite its monumental mass, it survives almost exclusively on tiny shrimp-like crustaceans called krill, filtering millions of calories of ocean water daily through coarse baleen plates hanging from its upper jaw.",
+                ecologicalRole: "Crucial element of the oceanic nutrient cycle. Their deep-water feeding and surface excretion distribute vital minerals across ocean layers.",
+                threats: "Global ocean noise pollution disrupting acoustic communications, ship-strike impacts, and changing ocean temperatures affecting krill yields.",
+                fact: "A blue whale's pulse is so powerful that its heartbeat can be detected from up to two miles (3.2 km) away using specialized underwater sonar tracking equipment."
+            },
+            {
+                id: "komodo",
+                name: "Komodo Dragon",
+                scientificName: "Varanus komodoensis",
+                class: "Reptile",
+                diet: "Carnivore",
+                habitat: "Indonesian Islands",
+                lifespan: "30+ Years",
+                status: "Endangered",
+                statusColor: "bg-red-100 text-red-800",
+                image: "https://images.unsplash.com/photo-1604173361541-1188d3ca7765?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "The heaviest, most aggressive living species of lizard, equipped with toxic venom delivery systems.",
+                overview: "Dominating the ecosystems of the Lesser Sunda Islands, the Komodo Dragon employs a combination of brute force and chemical warfare. Once believed to hunt using filthy mouth bacteria, modern research confirms they possess complex venom glands in their lower jaws that discharge toxic proteins. This venom prevents blood clotting, inducing rapid shock and blood loss in their targeted prey.",
+                ecologicalRole: "Apex scavenger and apex land predator within its highly restricted island territories.",
+                threats: "Climate change causing rising sea levels that threaten to submerge coastal habitats, along with human encroachment.",
+                fact: "Komodo dragons possess highly elastic stomachs, allowing them to comfortably consume up to 80 percent of their total body weight in a single feeding session."
+            }
+        ];
+
+        const animalGrid = document.getElementById('animalGrid');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const filterClass = document.getElementById('filterClass');
+        const resultCount = document.getElementById('resultCount');
+
+        // Render Animal Cards Dynamically
+        function renderCards(data) {
+            animalGrid.innerHTML = '';
+            
+            if (data.length === 0) {
+                animalGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                resultCount.textContent = "0 species found";
+                return;
+            }
+
+            animalGrid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            resultCount.textContent = `Showing ${data.length} species`;
+
+            data.forEach(animal => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col group cursor-pointer";
+                card.onclick = () => openModal(animal.id);
+                
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden bg-slate-200">
+                        <img src="${animal.image}" alt="${animal.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm">${animal.class}</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors serif-title">${animal.name}</h3>
+                            <p class="text-xs italic text-slate-400 mb-2">${animal.scientificName}</p>
+                            <p class="text-sm text-slate-600 line-clamp-3">${animal.shortDesc}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-xs font-medium text-slate-500"><i class="fa-solid fa-map-pin mr-1 text-emerald-600"></i> ${animal.habitat.split('/')[0]}</span>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded ${animal.statusColor}">${animal.status}</span>
+                        </div>
+                    </div>
+                `;
+                animalGrid.appendChild(card);
+            });
+        }
+
+        // Search & Filter Handler
+        function filterData() {
+            const query = searchInput.value.toLowerCase();
+            const classFilter = filterClass.value;
+
+            const filtered = animalDataset.filter(animal => {
+                const matchesSearch = animal.name.toLowerCase().includes(query) || 
+                                      animal.diet.toLowerCase().includes(query) || 
+                                      animal.habitat.toLowerCase().includes(query) ||
+                                      animal.scientificName.toLowerCase().includes(query);
+                
+                const matchesClass = classFilter === 'all' || animal.class === classFilter;
+
+                return matchesSearch && matchesClass;
+            });
+
+            renderCards(filtered);
+        }
+
+        // Modal Interactive Window Controls
+        function openModal(id) {
+            const animal = animalDataset.find(a => a.id === id);
+            if (!animal) return;
+
+            document.getElementById('modalImage').src = animal.image;
+            document.getElementById('modalImage').alt = animal.name;
+            document.getElementById('modalTag').className = `px-2.5 py-1 text-xs font-semibold rounded-full uppercase tracking-wider mb-2 inline-block ${animal.statusColor}`;
+            document.getElementById('modalTag').textContent = animal.class;
+            document.getElementById('modalName').textContent = animal.name;
+            document.getElementById('modalSciName').textContent = animal.scientificName;
+            
+            document.getElementById('modalDiet').textContent = animal.diet;
+            document.getElementById('modalHabitat').textContent = animal.habitat;
+            document.getElementById('modalLifespan').textContent = animal.lifespan;
+            
+            const statusBadge = document.getElementById('modalStatus');
+            statusBadge.textContent = animal.status;
+            statusBadge.className = `inline-block px-2 py-0.5 mt-0.5 text-xs font-bold rounded ${animal.statusColor}`;
+
+            document.getElementById('modalOverview').textContent = animal.overview;
+            document.getElementById('modalEco').textContent = animal.ecologicalRole;
+            document.getElementById('modalThreats').textContent = animal.threats;
+            document.getElementById('modalFact').textContent = animal.fact;
+
+            const modal = document.getElementById('animalModal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-95');
+            document.body.style.overflow = 'hidden'; // Lock main scroll
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('animalModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.add('scale-95');
+            document.body.style.overflow = ''; // Unlock main scroll
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('input', filterData);
+        filterClass.addEventListener('change', filterData);
+        
+        // Close modal when clicking outside content box
+        document.getElementById('animalModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Initialize application on load
+        window.onload = () => {
+            renderCards(animalDataset);
+        };
+    </script>
+</body>
+</html>
