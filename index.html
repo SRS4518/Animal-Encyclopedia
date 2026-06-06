@@ -44,6 +44,7 @@
                         <option value="Bird">Birds</option>
                         <option value="Amphibian">Amphibians</option>
                         <option value="Reptile">Reptiles</option>
+                        <option value="Fish">Fish</option>
                     </select>
                 </div>
             </div>
@@ -137,7 +138,6 @@
     </footer>
 
     <script>
-        // Deep Researched Dataset
         const animalDataset = [
             {
                 id: "elephant",
@@ -151,10 +151,10 @@
                 statusColor: "bg-red-100 text-red-800",
                 image: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "The largest living terrestrial mammal on Earth, recognized by its long trunk and immense intelligence.",
-                overview: "The African Bush Elephant is a keystone species critical to maintaining its native ecosystems. Utilizing their powerful trunks containing over 40,000 muscles, they forge paths through dense brush, excavate dry riverbeds to create water holes for other species, and disperse seeds across vast geographical boundaries. They possess sophisticated neurological structures akin to humans, demonstrating deep empathy, generational memory, and complex communication networks through infrasonic rumbles.",
+                overview: "The African Bush Elephant is a keystone species critical to maintaining its native ecosystems. Utilizing their powerful trunks containing over 40,000 muscles, they forge paths through dense brush, excavate dry riverbeds to create water holes for other species, and disperse seeds across vast geographical boundaries. They possess sophisticated neurological structures akin to humans, demonstrating deep empathy, generational memory, and complex communication networks.",
                 ecologicalRole: "Engineers of the savannah. They suppress bush encroachment, creating open grasslands essential for grazing herbivores.",
                 threats: "Severe habitat fragmentation driven by agricultural expansion and illegal poaching syndicates targetting ivory tusks.",
-                fact: "An adult elephant requires up to 300 pounds (136 kg) of vegetation daily and can detect water sources from miles away via seismic vibrations felt through their feet."
+                fact: "An adult elephant requires up to 300 pounds (136 kg) of vegetation daily and can detect water sources from miles away via seismic vibrations."
             },
             {
                 id: "falcon",
@@ -168,10 +168,10 @@
                 statusColor: "bg-green-100 text-green-800",
                 image: "https://images.unsplash.com/photo-1611001716885-b3402558a62b?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "The undisputed speed monarch of the animal kingdom, capable of breathtaking aerial hunting dives.",
-                overview: "Found on every continent except Antarctica, the Peregrine Falcon represents the pinnacle of evolutionary aerodynamics. Renowned for its hunting dive (the 'stoop'), it ascends to great heights before plunging nearly vertically onto prey. Its respiratory system is uniquely modified with specialized bony tubercles inside its nostrils to redirect high-pressure airflow, preventing its lungs from bursting during high-velocity descents.",
+                overview: "Found on every continent except Antarctica, the Peregrine Falcon represents the pinnacle of evolutionary aerodynamics. Renowned for its hunting dive (the 'stoop'), it ascends to great heights before plunging nearly vertically onto prey. Its respiratory system is uniquely modified with specialized bony tubercles inside its nostrils to redirect high-pressure airflow, preventing its lungs from bursting.",
                 ecologicalRole: "Apex avian predator. Regulates populations of medium-sized birds like pigeons and shorebirds, preserving local ecosystem balances.",
                 threats: "Historically decimated by organochlorine pesticides (DDT). Current hazards include wind turbine collisions and urban chemical exposure.",
-                fact: "During its signature hunting stoop, the Peregrine Falcon reaches speeds exceeding 240 mph (386 km/h), making it the fastest animal on the planet."
+                fact: "During its signature hunting stoop, the Peregrine Falcon reaches speeds exceeding 240 mph (386 km/h)."
             },
             {
                 id: "axolotl",
@@ -179,16 +179,16 @@
                 scientificName: "Ambystoma mexicanum",
                 class: "Amphibian",
                 diet: "Carnivore",
-                habitat: "Lake Xochimilco (Mexico)",
+                habitat: "Lake Xochimilco",
                 lifespan: "10 - 15 Years",
                 status: "Critically Endangered",
                 statusColor: "bg-rose-200 text-rose-900 border border-rose-300",
                 image: "https://images.unsplash.com/photo-1508817628294-5a453fa0b8fb?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "An evolutionary marvel exhibiting neoteny, meaning it retains its juvenile traits throughout its entire life.",
-                overview: "The Axolotl is a unique amphibian that never undergoes full metamorphosis; unlike frogs or salamanders, it retains its external feathered gills and remains strictly aquatic into adulthood. Beyond its appearance, it possesses an unparalleled physiological superpower: the ability to seamlessly regenerate lost limbs, tail sections, heart tissue, and even portions of its brain without forming scar tissue.",
+                overview: "The Axolotl is a unique amphibian that never undergoes full metamorphosis; unlike frogs or salamanders, it retains its external feathered gills and remains strictly aquatic into adulthood. Beyond its appearance, it possesses an unparalleled physiological superpower: the ability to seamlessly regenerate lost limbs, heart tissue, and even portions of its brain.",
                 ecologicalRole: "Top native predator in its micro-aquatic ecosystem, feeding on insects, mollusks, and small fish.",
-                threats: "Extreme water pollution in Mexico City, the introduction of invasive predatory fish, and near-complete drying of its native canals.",
-                fact: "Scientists heavily study axolotls in laboratories worldwide due to their ability to regenerate complete organs, hoping to unlock advanced healing in humans."
+                threats: "Extreme water pollution in Mexico City, invasive predatory fish, and near-complete drying of its native canals.",
+                fact: "Scientists heavily study axolotls in laboratories worldwide due to their ability to regenerate complete organs."
             },
             {
                 id: "bluewhale",
@@ -202,10 +202,10 @@
                 statusColor: "bg-red-100 text-red-800",
                 image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Anim1716_-_Flickr_-_NOAA_Photo_Library.jpg",
                 shortDesc: "The largest known animal ever to have lived on Earth—surpassing even the heaviest prehistoric dinosaurs.",
-                overview: "The Blue Whale is a marine mammal belonging to the baleen suborder. Growing up to 100 feet long, its tongue alone can weigh as much as an entire adult elephant. Despite its monumental mass, it survives almost exclusively on tiny shrimp-like crustaceans called krill, filtering millions of calories of ocean water daily through coarse baleen plates hanging from its upper jaw.",
-                ecologicalRole: "Crucial element of the oceanic nutrient cycle. Their deep-water feeding and surface excretion distribute vital minerals across ocean layers.",
-                threats: "Global ocean noise pollution disrupting acoustic communications, ship-strike impacts, and changing ocean temperatures affecting krill yields.",
-                fact: "A blue whale's pulse is so powerful that its heartbeat can be detected from up to two miles (3.2 km) away using specialized underwater sonar tracking equipment."
+                overview: "The Blue Whale is a marine mammal belonging to the baleen suborder. Growing up to 100 feet long, its tongue alone can weigh as much as an entire adult elephant. Despite its monumental mass, it survives almost exclusively on tiny shrimp-like crustaceans called krill, filtering millions of calories of ocean water daily through coarse baleen plates.",
+                ecologicalRole: "Crucial element of the oceanic nutrient cycle. Their deep-water feeding and surface excretion distribute vital minerals.",
+                threats: "Global ocean noise pollution disrupting acoustic communications, ship-strike impacts, and changing ocean temperatures.",
+                fact: "A blue whale's pulse is so powerful that its heartbeat can be detected from up to two miles away."
             },
             {
                 id: "komodo",
@@ -219,19 +219,104 @@
                 statusColor: "bg-red-100 text-red-800",
                 image: "https://upload.wikimedia.org/wikipedia/commons/d/df/Komodo_dragon_with_tongue.jpg",
                 shortDesc: "The heaviest, most aggressive living species of lizard, equipped with toxic venom delivery systems.",
-                overview: "Dominating the ecosystems of the Lesser Sunda Islands, the Komodo Dragon employs a combination of brute force and chemical warfare. Once believed to hunt using filthy mouth bacteria, modern research confirms they possess complex venom glands in their lower jaws that discharge toxic proteins. This venom prevents blood clotting, inducing rapid shock and blood loss in their targeted prey.",
+                overview: "Dominating the ecosystems of the Lesser Sunda Islands, the Komodo Dragon employs a combination of brute force and chemical warfare. Once believed to hunt using filthy mouth bacteria, modern research confirms they possess complex venom glands in their lower jaws that discharge toxic proteins. This venom prevents blood clotting, inducing rapid shock.",
                 ecologicalRole: "Apex scavenger and apex land predator within its highly restricted island territories.",
                 threats: "Climate change causing rising sea levels that threaten to submerge coastal habitats, along with human encroachment.",
-                fact: "Komodo dragons possess highly elastic stomachs, allowing them to comfortably consume up to 80 percent of their total body weight in a single feeding session."
+                fact: "Komodo dragons possess highly elastic stomachs, allowing them to comfortably consume up to 80 percent of their body weight in a single meal."
             },
-        ]:
+            {
+                id: "tiger",
+                name: "Bengal Tiger",
+                scientificName: "Panthera tigris tigris",
+                class: "Mammal",
+                diet: "Carnivore",
+                habitat: "Asian Forests & Mangroves",
+                lifespan: "8 - 10 Years",
+                status: "Endangered",
+                statusColor: "bg-red-100 text-red-800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Walking_tiger_female.jpg",
+                shortDesc: "An iconic apex predator characterized by its striking orange coat and dark vertical stripes.",
+                overview: "The Bengal Tiger is the most numerous tiger subspecies, primarily found in India, Bangladesh, Nepal, and Bhutan. As solitary and highly territorial hunters, they rely on stealth and power to take down ungulates like deer and wild boar. Their distinctive striped coats act as perfect camouflage in tall grasses and forest undergrowth. Unlike most cats, tigers are excellent and willing swimmers.",
+                ecologicalRole: "As an apex predator, they are vital in regulating prey populations, which in turn prevents overgrazing and maintains forest health.",
+                threats: "Severe habitat loss due to human population expansion, conflict with local villagers, and highly organized illegal poaching for traditional medicines.",
+                fact: "No two tigers have the exact same stripe pattern; their stripes are as unique as human fingerprints, and the pattern is even on their skin, not just their fur."
+            },
+            {
+                id: "penguin",
+                name: "Emperor Penguin",
+                scientificName: "Aptenodytes forsteri",
+                class: "Bird",
+                diet: "Carnivore",
+                habitat: "Antarctic Ice",
+                lifespan: "15 - 20 Years",
+                status: "Near Threatened",
+                statusColor: "bg-amber-100 text-amber-800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Emperor_Penguin_Manchot_empereur.jpg",
+                shortDesc: "The tallest and heaviest of all living penguin species, enduring the harshest winters on Earth.",
+                overview: "Endemic to Antarctica, the Emperor Penguin breeds during the brutal Antarctic winter, where temperatures drop to -60°C (-76°F). Males endure months of fasting, balancing single eggs on their feet under a warm brood pouch while females hunt at sea. They have exceptionally dense feathers and thick blubber, and rely on communal huddling to survive the freezing gale-force winds.",
+                ecologicalRole: "Major consumer of krill, squid, and small fish, transferring significant marine nutrients to terrestrial ice shelves.",
+                threats: "Climate change severely shrinking the sea ice necessary for their breeding grounds and feeding areas.",
+                fact: "Emperor penguins can dive to depths of over 500 meters (1,640 feet) and hold their breath for more than 20 minutes while hunting."
+            },
+            {
+                id: "dartfrog",
+                name: "Blue Poison Dart Frog",
+                scientificName: "Dendrobates azureus",
+                class: "Amphibian",
+                diet: "Carnivore (Insects)",
+                habitat: "South American Rainforests",
+                lifespan: "10 - 15 Years",
+                status: "Vulnerable",
+                statusColor: "bg-orange-100 text-orange-800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/3/31/Dendrobates_azureus_%28blue_poison_dart_frog%29.JPG",
+                shortDesc: "A brilliantly colored amphibian whose vibrant skin serves as a warning of its lethal toxicity.",
+                overview: "Found in the Sipaliwini savanna of southern Suriname, this small frog sports a vibrant sapphire blue coloration with black spots. The bright colors serve as a biological warning (aposematism) to predators. They do not synthesize their own poison; instead, they accumulate deadly alkaloid toxins through their diet of specific ants, millipedes, and termites found on the forest floor.",
+                ecologicalRole: "Micro-predator regulating populations of small insects and acting as a toxic deterrent in the food web.",
+                threats: "Deforestation, illegal capture for the international pet trade, and susceptibility to the global amphibian chytrid fungus.",
+                fact: "When kept in captivity and fed a standard diet of fruit flies, these frogs completely lose their toxicity over time."
+            },
+            {
+                id: "shark",
+                name: "Great White Shark",
+                scientificName: "Carcharodon carcharias",
+                class: "Fish",
+                diet: "Carnivore",
+                habitat: "Global Coastal Waters",
+                lifespan: "70+ Years",
+                status: "Vulnerable",
+                statusColor: "bg-orange-100 text-orange-800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg",
+                shortDesc: "The world's largest known predatory fish, equipped with highly advanced sensory organs.",
+                overview: "The Great White Shark is a highly migratory apex predator found in cool, coastal waters globally. They are endothermic (warm-blooded), allowing them to maintain a body temperature higher than the surrounding water, granting them immense speed and agility. They boast a specialized sixth sense (ampullae of Lorenzini) that allows them to detect the microscopic electromagnetic fields generated by the heartbeat of their prey.",
+                ecologicalRole: "Critical to oceanic health, culling weak and diseased animals from marine mammal populations like seals and sea lions.",
+                threats: "Accidental bycatch in commercial fishing nets, targeted finning, and lingering historical stigma leading to culling.",
+                fact: "A Great White Shark goes through around 30,000 teeth in its lifetime, constantly rolling new rows of teeth forward to replace broken ones."
+            },
+            {
+                id: "panda",
+                name: "Giant Panda",
+                scientificName: "Ailuropoda melanoleuca",
+                class: "Mammal",
+                diet: "Herbivore (Bamboo)",
+                habitat: "Mountain Forests of China",
+                lifespan: "20 Years",
+                status: "Vulnerable",
+                statusColor: "bg-orange-100 text-orange-800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Grosser_Panda.JPG",
+                shortDesc: "A beloved bear species renowned for its distinctive black-and-white coat and heavy bamboo diet.",
+                overview: "Despite belonging to the order Carnivora and having the digestive system of a carnivore, the Giant Panda’s diet consists 99% of bamboo. Because bamboo offers so little nutritional value, they must eat 26 to 84 pounds (12 to 38 kg) of it every single day to survive. They have developed an elongated wrist bone that functions as a 'pseudo-thumb,' allowing them to dexterously grasp bamboo stalks.",
+                ecologicalRole: "Crucial seed dispersers and forest facilitators; their roaming spreads seeds and thins out bamboo patches to allow new growth.",
+                threats: "Extreme habitat fragmentation restricting genetic diversity, though intensive conservation efforts have recently improved their numbers.",
+                fact: "Panda cubs are born incredibly tiny, weighing only about 100 grams (3.5 ounces)—about 1/900th the size of their mother."
+            }
+        ];
+
         const animalGrid = document.getElementById('animalGrid');
         const emptyState = document.getElementById('emptyState');
         const searchInput = document.getElementById('searchInput');
         const filterClass = document.getElementById('filterClass');
         const resultCount = document.getElementById('resultCount');
 
-        // Render Animal Cards Dynamically
         function renderCards(data) {
             animalGrid.innerHTML = '';
             
@@ -272,7 +357,6 @@
             });
         }
 
-        // Search & Filter Handler
         function filterData() {
             const query = searchInput.value.toLowerCase();
             const classFilter = filterClass.value;
@@ -291,7 +375,6 @@
             renderCards(filtered);
         }
 
-        // Modal Interactive Window Controls
         function openModal(id) {
             const animal = animalDataset.find(a => a.id === id);
             if (!animal) return;
@@ -319,26 +402,23 @@
             const modal = document.getElementById('animalModal');
             modal.classList.remove('opacity-0', 'pointer-events-none');
             modal.firstElementChild.classList.remove('scale-95');
-            document.body.style.overflow = 'hidden'; // Lock main scroll
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             const modal = document.getElementById('animalModal');
             modal.classList.add('opacity-0', 'pointer-events-none');
             modal.firstElementChild.classList.add('scale-95');
-            document.body.style.overflow = ''; // Unlock main scroll
+            document.body.style.overflow = '';
         }
 
-        // Event Listeners
         searchInput.addEventListener('input', filterData);
         filterClass.addEventListener('change', filterData);
         
-        // Close modal when clicking outside content box
         document.getElementById('animalModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // Initialize application on load
         window.onload = () => {
             renderCards(animalDataset);
         };
