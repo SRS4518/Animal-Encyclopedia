@@ -58,7 +58,7 @@
         </div>
 
         <div id="animalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            </div>
+        </div>
         
         <div id="emptyState" class="hidden text-center py-16">
             <i class="fa-solid fa-paw text-slate-300 text-5xl mb-4"></i>
@@ -71,7 +71,8 @@
         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col">
             
             <div class="relative h-64 sm:h-80 w-full bg-slate-200 shrink-0">
-                <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+                <!-- Added no-referrer here -->
+                <img id="modalImage" src="" alt="" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                 <button onclick="closeModal()" class="absolute top-4 right-4 bg-black/40 text-white hover:bg-black/70 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -338,7 +339,8 @@
                 
                 card.innerHTML = `
                     <div class="relative h-48 overflow-hidden bg-slate-200">
-                        <img src="${animal.image}" alt="${animal.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <!-- Added no-referrer here too -->
+                        <img src="${animal.image}" alt="${animal.name}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm">${animal.class}</span>
                     </div>
                     <div class="p-5 flex-grow flex flex-col justify-between">
